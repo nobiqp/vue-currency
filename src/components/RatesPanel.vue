@@ -18,21 +18,26 @@ const ratesData = ref({
 	timestamp: null,
 });
 
-const date = new Date(ratesData.value.timestamp);
+const formattedTime = computed(() => {
+	const ts = ratesData.value.timestamp
+	if (!ts) return ''
 
-const formattedTime = date.toLocaleString('en-US', {
-	month: 'short',   // Nov
-	day: 'numeric',   // 7
-	year: 'numeric',  // 2025
-	hour: '2-digit',
-	minute: '2-digit',
-	hour12: false
-}).replace(',', '');
+	const date = new Date(ts * 1000);
+	return date.toLocaleString('en-US', {
+		month: 'short',   // Nov
+		day: 'numeric',
+		year: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit',
+		hour12: false
+	}).replace(',', '')
+})
 
 onMounted(async () => {
 	try {
-		const response = await api.get(`/latest?base=${ratesData.value.base}`);
-		ratesData.value.rates = response.data.rates;
+		const response = await api.get(`/latest/${ratesData.value.base}`);
+		ratesData.value.rates = response.data.conversion_rates;
+		ratesData.value.timestamp = response.data.time_last_update_unix;
 		console.log(response.data);
 	} catch (error) {
 		console.error('Error getting data' + error);
@@ -41,8 +46,9 @@ onMounted(async () => {
 
 const refreshRates = async () => {
 	try {
-		const response = await api.get(`/latest?base=${ratesData.value.base}`);
-		ratesData.value.rates = response.data.rates;
+		const response = await api.get(`/latest/${ratesData.value.base}`);
+		ratesData.value.rates = response.data.conversion_rates;
+		ratesData.value.timestamp = response.data.time_last_update_unix;
 	} catch (error) {
 		console.error('Error refreshing data' + error);
 	}
@@ -51,7 +57,6 @@ const refreshRates = async () => {
 const filteredRates = computed(() => {
 	const entries = Object.entries(ratesData.value.rates);
 	const search = searchTerm.value.trim().toUpperCase();
-	refreshRates();
 	return Object.fromEntries(
 		entries.filter(([code]) => {
 			if (view.value === 'Top 10' && !top10.includes(code)) return false;
@@ -95,7 +100,7 @@ onMounted(() => {
 		<div class="rates-header">
 			<h3>🌍 Latest Rates</h3>
 			<div class="rates-controls">
-				<select v-model="ratesData.base" class="input">
+				<select @change="refreshRates" v-model="ratesData.base" class="input">
 					<option>EUR</option>
 					<option>USD</option>
 					<option>CAD</option>

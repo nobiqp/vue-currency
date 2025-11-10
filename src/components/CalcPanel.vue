@@ -20,8 +20,8 @@ const calcData = ref({
 
 onMounted(async () => {
 	try {
-		const response = await api.get(`/convert?from=EUR&to=USD`);
-		defaultData.value.rate = response.data.info.rate;
+		const response = await api.get(`/pair/EUR/USD`);
+		defaultData.value.rate = response.data.conversion_rate;
 	} catch (error) {
 		console.error('Error getting data' + error);
 	}
@@ -29,8 +29,8 @@ onMounted(async () => {
 
 const handleNewCalc = async () => {
 	try {
-		const response = await api.get(`/convert?from=${calcData.value.from}&to=${calcData.value.to}`);
-		defaultData.value.rate = response.data.info.rate;
+		const response = await api.get(`/pair/${calcData.value.from}/${calcData.value.to}`);
+		defaultData.value.rate = response.data.conversion_rate;
 		defaultData.value.from = calcData.value.from;
 		defaultData.value.to = calcData.value.to;
 	} catch (error) {
