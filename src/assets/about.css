@@ -1,0 +1,33 @@
+.about-page {
+	max-width: 700px;
+	margin: 3rem auto;
+	padding: 2rem 1.5rem;
+	text-align: center;
+	line-height: 1.6;
+	color: #333;
+	background-color: #f9f9f9;
+	border-radius: 16px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.about-page h1 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 1.5rem;
+	color: #1a202c;
+}
+
+.about-page p {
+	font-size: 1rem;
+	margin-bottom: 1rem;
+}
+
+.about-page strong {
+	color: #0077ff;
+}
+
+.about-page .updated-year {
+	margin-top: 2rem;
+	font-size: 0.9rem;
+	color: #777;
+}
