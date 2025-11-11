@@ -2,7 +2,7 @@
 import api from '@/api';
 import gsap from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const defaultData = ref({
 	amount: 100,
@@ -17,6 +17,13 @@ const calcData = ref({
 	to: 'USD',
 	rate: null,
 });
+
+watch(
+	() => calcData.value.amount,
+	(newValue) => {
+		if (newValue < 0) calcData.value.amount = 0;
+	}
+);
 
 onMounted(async () => {
 	try {
