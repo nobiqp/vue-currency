@@ -2,7 +2,7 @@
 import api from '@/api';
 import gsap from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const defaultData = ref({
 	amount: 100,
@@ -17,13 +17,6 @@ const calcData = ref({
 	to: 'USD',
 	rate: null,
 });
-
-watch(
-	() => calcData.value.amount,
-	(newValue) => {
-		if (newValue < 0) calcData.value.amount = 0;
-	}
-);
 
 onMounted(async () => {
 	try {
@@ -62,7 +55,7 @@ onMounted(() => {
 
 		<form class="form-calc" onsubmit="return false;">
 			<label>Amount
-				<input v-model="calcData.amount" class="input amount" type="number" />
+				<input v-model="calcData.amount" class="input amount" type="number" min="0" />
 			</label>
 
 			<div class="form-row split">
