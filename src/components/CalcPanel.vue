@@ -79,8 +79,9 @@ onMounted(() => {
 			<button @click="handleNewCalc" class="btn wide">Convert</button>
 
 			<div class="result-box">
-				<div class="result-value">100 {{ defaultData.from }} → {{ (defaultData.amount *
-					defaultData.rate).toFixed(2) }}
+				<div class="result-value">{{ (calcData.amount).toFixed(2) }} {{ defaultData.from }} → {{
+					(calcData.amount *
+						defaultData.rate).toFixed(2) }}
 					{{ defaultData.to
 					}}</div>
 				<div class="result-rate">Rate: {{ (defaultData.rate).toFixed(4) }}</div>
